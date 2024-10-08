@@ -1,0 +1,220 @@
+<!-- header -->
+
+<div class="card">
+  <p-menubar
+    [style]="{ border: 'none', margin: 'none', padding: '.5rem 1.5rem' }"
+  >
+    <ng-template pTemplate="start">
+      <p-button
+        (onClick)="sidebarVisible = true"
+        icon="pi pi-bars"
+        label="Menu"
+        text="true"
+        severity="secondary"
+        size="large"
+        [style]="{ padding: '0.25rem 0.5rem' }"
+      ></p-button>
+    </ng-template>
+
+    <ng-template pTemplate="end">
+      <div class="flex align-items-center gap-3">
+        @if(searchVisible){<input
+          type="text"
+          pInputText
+          placeholder="Search"
+          class="surface-200 border-none border-round-2xl h-2rem w-7rem md:w-15rem p-5"
+        />}<i
+          class="pi pi-search"
+          (click)="toggleSearch()"
+          style="cursor: pointer; font-size: 1rem; color: #757575"
+        ></i>
+
+        <p-avatar
+          icon="pi pi-user"
+          shape="circle"
+          [style]="{ 'background-color': '#00000000', color: '#757575' }"
+        />
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>
+
+<!-- sidepanel -->
+<div class="card flex justify-content-center">
+  <p-sidebar #sidebarRef [(visible)]="sidebarVisible">
+    <ng-template pTemplate="headless">
+      <div class="flex flex-column h-full">
+        <div
+          class="flex align-items-center justify-content-between px-2 pt-2 flex-shrink-0"
+        >
+          <p-button
+            (onClick)="closeSidePanel($event)"
+            icon="pi pi-times"
+            label="Close"
+            text="true"
+            severity="secondary"
+            size="large"
+            [style]="{
+              padding: '0.25rem  0.5rem',
+              margin: '0 0 1.5rem 1rem'
+            }"
+          ></p-button>
+        </div>
+        <div class="overflow-y-auto">
+          <p-accordion [activeIndex]="0" expandIcon="none" collapseIcon="none">
+            <p-accordionTab header="<Category 1>">
+              <ul class="list-none p-0 m-0 overflow-hidden">
+                @for(category of categories; track category){
+                <li>
+                  <a
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                    (click)="openSubSidebar(category.name)"
+                  >
+                    <span>{{ category.name }}</span>
+                    <i class="pi pi-angle-right ml-auto"></i>
+                  </a>
+                </li>
+                }
+              </ul>
+            </p-accordionTab>
+            <!-- <p-accordionTab header="<Category 2>">
+              <ul class="list-none p-0 m-0 overflow-hidden">
+                <li>
+                  <a
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                    (click)="openSubSidebar()"
+                  >
+                    <span><"product Category"></span>
+                    <i class="pi pi-angle-right ml-auto"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                    (click)="openSubSidebar()"
+                  >
+                    <span><"product Category"></span>
+                    <i class="pi pi-angle-right ml-auto"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                    (click)="openSubSidebar()"
+                  >
+                    <span><"product Category"></span>
+                    <i class="pi pi-angle-right ml-auto"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                    (click)="openSubSidebar()"
+                  >
+                    <span><"product Category"></span>
+                    <i class="pi pi-angle-right ml-auto"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                    (click)="openSubSidebar()"
+                  >
+                    <span><"product Category"></span>
+                    <i class="pi pi-angle-right ml-auto"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                    (click)="openSubSidebar()"
+                  >
+                    <span><"product Category"></span>
+                    <i class="pi pi-angle-right ml-auto"></i>
+                  </a>
+                </li>
+              </ul>
+            </p-accordionTab> -->
+          </p-accordion>
+        </div>
+        <div class="mt-auto pb-4">
+          @for(link of externalLinks; track link){
+
+          <a
+            pRipple
+            class="mx-3 my-1 flex align-items-center cursor-pointer p-2 gap-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+            [href]="link.url"
+          >
+            <i class="pi pi-external-link"></i>
+            <span>{{ link.label }}</span>
+          </a>
+          }
+        </div>
+      </div>
+    </ng-template>
+  </p-sidebar>
+</div>
+
+<!-- subsidePanel -->
+
+<p-sidebar
+  [(visible)]="subSidebarVisible"
+  position="left"
+  [modal]="false"
+  role="region"
+  styleClass="sub-sidebar"
+  [style]="{
+    width: '100%',
+    'margin-left': '20rem',
+    'z-index': '1000',
+    'box-shadow': 'none'
+  }"
+>
+  <ng-template pTemplate="headless">
+    <div class="flex flex-row h-full w-full">
+      <div
+        class="overflow-y-auto w-2 fadeinleft animation-duration-1000 p-4 pt-7"
+      >
+        <!-- {{ subSidebarCategory }} -->
+        <div
+          class="flex flex-column gap-3 p-1 fadeinleft animation-duration-1000"
+        >
+          <span class="font-semibold">option </span>
+          <span class="font-semibold">option </span
+          ><span class="font-semibold">option </span>
+        </div>
+      </div>
+      <div
+        class="overflow-y-auto w-4 fadeinleft animation-duration-1000 p-4 pt-7"
+      >
+        <div class="grid fadeinleft animation-duration-1000">
+          @for (collection of collectionList; track collection){
+          <div class="col-6">
+            <div
+              class="card flex justify-content-center text-center border-round-sm surface-100 font-bold m-2"
+              style="aspect-ratio: 1 / 1; overflow: hidden"
+            >
+              <img
+                [src]="collection.image"
+                alt="collection Image"
+                [style]="{'width': '100%', 'height': '100%', 'object-fit': 'cover',}"
+              />
+            </div>
+            <span>{{ collection.name }}</span>
+          </div>
+          }
+        </div>
+      </div>
+      <div
+        class="overflow-y-auto w-4 h-full surface-30 fadeinleft animation-duration-1000"
+      >
+        <div
+          class="bg-cover bg-center bg-no-repeat bg-primary border-round h-full w-full bg-left fadeinleft animation-duration-1000"
+          style="
+            background-image: url('https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg');
+          "
+        ></div>
+      </div>
+    </div>
+  </ng-template>
+</p-sidebar>

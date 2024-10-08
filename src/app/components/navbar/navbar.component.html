@@ -1,0 +1,17 @@
+<div class="card">
+  <p-megaMenu
+    [model]="items"
+    [style]="{ 'border-radius': '0rem', display: 'flex' }"
+    styleClass="p-3 surface-0 sticky-menu"
+  >
+    <ng-template pTemplate="end">
+      <span
+        class="pi pi-shopping-cart cart"
+        style="color: black; font-size: 1.5rem; padding-right: 1rem"
+        (click)="togglecart()"
+      ></span>
+      <span class="quantity-badge" (click)="togglecart()">{{ quantity }}</span>
+      @if(showCart){<app-cart></app-cart>}
+    </ng-template>
+  </p-megaMenu>
+</div>
